@@ -6,7 +6,7 @@ module.exports = {
             const {email} = req.body;
             const foundUser = await User.find({email});
 
-            if (!foundUser) {
+            if (foundUser) {
                 throw new Error(`User with this email: ${email} already exists!`);
             }
 

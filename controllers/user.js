@@ -10,12 +10,11 @@ module.exports = {
         } catch (e) {
             res.json(e.message);
         }
-    }
-    ,
+    },
 
     getUserById: (req, res) => {
         try {
-             const user = req.user;
+            const user = req.user;
 
             res.json(user);
         } catch (e) {
@@ -34,13 +33,13 @@ module.exports = {
     },
 
     updateUser: async (req, res) => {
-        try{
-         const {userId} = req.params;
+        try {
+            const {userId} = req.params;
 
-         await User.findByIdAndUpdate(userId, req.body);
+            await User.findByIdAndUpdate(userId, req.body);
 
-         res.json(`User with ${userId} was updated!`)
-        } catch (e){
+            res.json(`User with ${userId} was updated!`)
+        } catch (e) {
             res.json(e.message);
         }
 
@@ -56,5 +55,4 @@ module.exports = {
             res.json(e.message);
         }
     },
-
 };
