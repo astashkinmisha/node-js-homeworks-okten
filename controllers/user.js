@@ -15,8 +15,7 @@ module.exports = {
 
     getUserById: async (req, res) => {
         try {
-            const {userId} = req.params;
-            const user = await User.findById(userId);
+             const user = await req.user;
 
             res.json(user);
         } catch (e) {
@@ -38,7 +37,7 @@ module.exports = {
         try{
          const {userId} = req.params;
 
-         await User.findOneAndUpdate(userId, req.body, {rawResult: false});
+         await User.findByIdAndUpdate(userId, req.body);
 
          res.json(`User with ${userId} was updated!`)
         } catch (e){
@@ -58,13 +57,5 @@ module.exports = {
         }
     },
 
-    loginUser: (req, res) => {
-        try {
-            const {login} = req.body;
 
-            res.json(`Successful ${login}, congratulations!`);
-        } catch (e){
-            res.json(e.message);
-        }
-    }
 };
