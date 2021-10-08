@@ -13,9 +13,9 @@ module.exports = {
     }
     ,
 
-    getUserById: async (req, res) => {
+    getUserById: (req, res) => {
         try {
-             const user = await req.user;
+             const user = req.user;
 
             res.json(user);
         } catch (e) {
@@ -56,6 +56,5 @@ module.exports = {
             res.json(e.message);
         }
     },
-
 
 };
