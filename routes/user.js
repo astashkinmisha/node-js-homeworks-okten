@@ -1,13 +1,15 @@
+const {getUsers} = require("../controllers");
 const router = require('express').Router();
 
-const userController = require('../controllers/user');
-const {searchByIdMiddleware} = require('../middleswares/user.findById.middleware');
-const {createUserMiddleware} = require('../middleswares/user.create.middleware');
+// const userController = require('../controllers/index');
+// const {searchByIdMiddleware} = require('../middleswares/index');
+// const {isUserBodyValid} = require('../middleswares/index');
+// const {updatedUserMiddleware} = require('../middleswares/index');
 
-router.get('/', userController.getUsers);
-router.post('/', createUserMiddleware, userController.createUser);
+router.get('/', getUsers);
+router.post('/', isUserBodyValid, userController.createUser);
 
-router.put('/:userId', searchByIdMiddleware, userController.updateUser);
+router.put('/:userId', updatedUserMiddleware, searchByIdMiddleware, userController.updateUser);
 router.get('/:userId', searchByIdMiddleware, userController.getUserById);
 router.delete('/:userId', searchByIdMiddleware, userController.deleteUser);
 

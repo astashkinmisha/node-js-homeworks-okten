@@ -1,11 +1,14 @@
+const {compare} = require('../service/password.service');
 module.exports = {
-    loginUser: (req, res) => {
+    loginUser: async (req, res, next) => {
         try {
-            const {login} = req.body;
+            const {login, password} = req.body;
+            const userDetails = req.user;
+            await compare(password, userDetails.password);
 
             res.json(`Successful ${login}, congratulations!`);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

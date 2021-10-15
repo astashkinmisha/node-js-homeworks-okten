@@ -1,4 +1,5 @@
 const User = require('../dataBase/User');
+const {NOT_FOUND_BY_ID} = require('../errors/index');
 
 module.exports = {
     searchByIdMiddleware: async (req, res, next) => {
@@ -8,7 +9,7 @@ module.exports = {
 
 
             if (!foundUser) {
-                throw new Error(`User with ID: ${userId}, not found!`);
+                throw new Error(NOT_FOUND_BY_ID.message, NOT_FOUND_BY_ID.code);
             }
 
             req.user = foundUser;

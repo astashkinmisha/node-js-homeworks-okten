@@ -23,7 +23,13 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         trim: true
-    }
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        select: false
+    },
 }, {timestamps: true});
 
 module.exports = model('user', userSchema);

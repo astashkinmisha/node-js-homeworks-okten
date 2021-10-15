@@ -1,58 +1,64 @@
-const User = require('../dataBase/User');
+const User = require('../dataBase/index');
+const {hash} = require('../service/index');
+const {userNormalizator} = require('../util/index');
+
 
 module.exports = {
 
-    getUsers: async (req, res) => {
+    getUsers: async (req, res, next) => {
         try {
             const users = await User.find();
 
             res.json(users);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
-    getUserById: (req, res) => {
+    getUserById: (req, res, next) => {
         try {
             const user = req.user;
 
             res.json(user);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
-    createUser: async (req, res) => {
+    createUser: async (req, res, next) => {
         try {
-            const newUser = await User.create(req.body);
+            const hashPassword = await hash(req.body.password);
+            console.log(hashPassword);
+            const newUser = await User.create({...req.body, password: hashPassword});
+            const normalizedUser = userNormalizator(newUser.toJSON());
 
-            res.json(newUser);
+            res.json(normalizedUser);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
-    updateUser: async (req, res) => {
+    updateUser: async (req, res, next) => {
         try {
             const {userId} = req.params;
 
             await User.findByIdAndUpdate(userId, req.body);
 
-            res.json(`User with ${userId} was updated!`)
+            res.json(`User with ${userId} was updated!`);
         } catch (e) {
-            res.json(e.message);
+           next(e);
         }
 
     },
 
-    deleteUser: async (req, res) => {
+    deleteUser: async (req, res, next) => {
         try {
             const {userId} = req.params;
             await User.findByIdAndDelete(userId);
 
             res.json(`User with id: ${userId}, was deleted`);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 };
